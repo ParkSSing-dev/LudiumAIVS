@@ -85,7 +85,7 @@ function ReportDisplay({ report, fileName }) {
               <ul className="issue-list">
                 {issues.map((issue, index) => {
                   
-                  const safeKeywords = ['없음', '유효함', '발견되지 않았습니다', '모든 파일이 유효함'];
+                  const safeKeywords = ['없음', '유효함', '발견되지 않았습니다', '모든 파일이 유효함', '구문적으로 유효합니다'];
                   const isSafeIssue = safeKeywords.some(keyword => 
                       issue.includes(keyword)
                   );
