@@ -105,7 +105,14 @@ function ReportDisplay({ report, fileName }) {
               <ul className="issue-list">
                 {issues.map((issue, index) => {
                   
-                  const safeKeywords = ['없음', '유효함', '발견되지 않았습니다', '모든 파일이 유효함', '구문적으로 유효합니다'];
+                  const safeKeywords = [
+                    '없음', 
+                    '유효함', 
+                    '발견되지 않았습니다', 
+                    '모든 파일이 유효함', 
+                    '구문적으로 유효합니다'
+                  ];
+
                   const isSafeIssue = safeKeywords.some(keyword => 
                       issue.includes(keyword)
                   );
@@ -114,16 +121,12 @@ function ReportDisplay({ report, fileName }) {
                   
                   if (isSafeIssue) {
                     itemStyleClass = 'issue-item-validity';
-                  } else if (key === 'scamCheck') {
-                    itemStyleClass = 'issue-item-scam';
-                  } else if (key === 'validityCheck') {
-                    itemStyleClass = 'issue-item-scam';
-                  } else if (key === 'sensationalCheck') { 
-                    itemStyleClass = 'issue-item-quality';
-                  } else if (key === 'dataCollectionCheck') {
-                    itemStyleClass = 'issue-item-quality';
+                  } else if (key === 'scamCheck' || key === 'validityCheck') {
+                    itemStyleClass = 'issue-item-scam';  
+                  } else if (key === 'sensationalCheck' || key === 'dataCollectionCheck' || key === 'logicCheck') {
+                    itemStyleClass = 'issue-item-quality';       
                   } else {
-                    itemStyleClass = 'issue-item-scam';
+                    itemStyleClass = 'issue-item-scam'; 
                   }
 
                   return (
