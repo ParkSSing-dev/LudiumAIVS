@@ -298,6 +298,20 @@ main {
   color: #FFFFFF;
 }
 
+/* [WARNING (노란색) 테마] */
+.report-container.status-warning {
+  border: 1px solid #FFC107; 
+}
+.report-container.status-warning .report-header {
+  background-color: #FFF3CD; 
+  color: #664d03; 
+}
+
+body.dark-mode .report-container.status-warning .report-header {
+  background-color: #4d3c1a; 
+  color: #FFF3CD; 
+}
+
 /* [세부 항목 (스캠/유효성)] */
 .check-section {
   background: var(--card-bg-light);

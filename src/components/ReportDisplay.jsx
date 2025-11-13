@@ -31,23 +31,43 @@ const getRiskProps = (decision) => {
     case 'CLEAN':
       return { level: '안전 (CLEAN)', color: '#FFFFFF', width: '0%' };
     default:
-      return { level: '알 수 없음', color: '#AAAAAA', width: '50%' };
+      return { level: '알 수 없음', color: '#FFFFFF', width: '50%' };
+  }
+}
+
+const getStatusClass = (decision) => {
+  switch (decision) {
+    case 'CLEAN':
+      return 'status-pass';
+    case 'SCAM_DETECTED':
+    case 'INVALID_FORMAT':
+      return 'status-fail';
+    case 'CONTENT_WARNING':
+      return 'status-warning';
+    default:
+      return 'status-fail';
   }
 }
 
 function ReportDisplay({ report, fileName }) {
   
-  const isFail = report.finalDecision !== 'CLEAN';
+  //const isFail = report.finalDecision !== 'CLEAN';
+  const statusClass = getStatusClass(report.finalDecision);
   const reportDetails = report.reportDetails;
   const checkKeys = Object.keys(reportDetails);
   const risk = getRiskProps(report.finalDecision);
 
   return (
-    <div className={`report-container ${isFail ? 'status-fail' : 'status-pass'}`}>
+    <div className={`report-container ${statusClass}`}>
       <div className="report-header">
         <h3 className="report-filename">파일명 : {fileName}</h3>
         <h2>
-          {isFail ? '❌ 검증 실패 (Fail)' : '✅ 검증 통과 (Pass)'}
+          {report.finalDecision === 'CLEAN' ? 
+            '✅ 검증 통과 (Pass)' : 
+            (report.finalDecision === 'CONTENT_WARNING' ? 
+              '⚠️ 검증 경고 (Warning)' : 
+              '❌ 검증 실패 (Fail)')
+          }
         </h2>
         <p className="report-summary">{report.summary}</p>
         <div className="risk-meter">
