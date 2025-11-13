@@ -35,7 +35,7 @@ const getRiskProps = (decision) => {
   }
 }
 
-function ReportDisplay({ report }) {
+function ReportDisplay({ report, fileName }) {
   
   const isFail = report.finalDecision !== 'CLEAN';
   const reportDetails = report.reportDetails;
@@ -45,6 +45,7 @@ function ReportDisplay({ report }) {
   return (
     <div className={`report-container ${isFail ? 'status-fail' : 'status-pass'}`}>
       <div className="report-header">
+        <h3 className="report-filename">파일명 : {fileName}</h3>
         <h2>
           {isFail ? '❌ 검증 실패 (Fail)' : '✅ 검증 통과 (Pass)'}
         </h2>

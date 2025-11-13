@@ -11,20 +11,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [reportData, setReportData] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState(null);
 
   const [isDarkMode, setIsDarkMode] = useState(true);
-
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
+    document.body.classList.toggle('dark-mode', isDarkMode);
   }, [isDarkMode]);
 
   const handleFilesSelect = (files) => {
     setError(null);
     setReportData(null);
+    setSelectedFileName(null);
     
     const validFiles = files.filter(file => {
       const extension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
@@ -48,6 +45,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     setReportData(null);
+    setSelectedFileName(null);
 
     const fileReadPromises = selectedFiles.map(file => {
       return new Promise((resolve, reject) => {
@@ -100,6 +98,45 @@ function App() {
     setSelectedFiles([]);
     setReportData(null);
     setError(null);
+    setSelectedFileName(null);
+  };
+
+  const handleFileBoxClick = (fileName) => {
+    setSelectedFileName(fileName);
+  };
+
+  const handleBackButtonClick = () => {
+    setSelectedFileName(null);
+  };
+
+  const getFileBoxClass = (report) => {
+    if (!report) return 'status-fail';
+    switch (report.finalDecision) {
+      case 'CLEAN':
+        return 'status-pass';
+      case 'SCAM_DETECTED':
+      case 'INVALID_FORMAT':
+        return 'status-fail';
+      case 'CONTENT_WARNING':
+        return 'status-warning';
+      default:
+        return 'status-fail';
+    }
+  };
+
+  const getFileBoxIcon = (report) => {
+    if (!report) return '❓';
+    switch (report.finalDecision) {
+      case 'CLEAN':
+        return '🟩'; // 초록
+      case 'SCAM_DETECTED':
+      case 'INVALID_FORMAT':
+        return '🟥'; // 빨강
+      case 'CONTENT_WARNING':
+        return '🟨'; // 노랑
+      default:
+        return '❓';
+    }
   };
 
   return (
@@ -117,46 +154,45 @@ function App() {
       </header>
 
       <main>
-        {!isLoading && !reportData && (
-          <FileUploader 
-            onFilesSelect={handleFilesSelect}
-            disabled={isLoading}
-          />
-        )}
-
-        {selectedFiles.length > 0 && !isLoading && !reportData && (
-          <div className="file-list">
-            <strong>선택된 파일:</strong>
-            <ul>
-              {selectedFiles.map(file => (
-                <li key={file.name}>{file.name} ({Math.round(file.size / 1024)} KB)</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {!reportData && (
-          <button 
-            className="analyze-button"
-            onClick={handleAnalyzeClick}
-            disabled={isLoading || selectedFiles.length === 0}
-          >
-            {isLoading ? "AI가 분석 중입니다..." : "분석하기"}
-          </button>
-        )}  
-
-        {error && <div className="error-message">{error}</div>}
-
         {isLoading && (
           <div className="loading-spinner">
             <div className="spinner"></div>
             <p>AI가 코드를 검증하고 있습니다. 잠시만 기다려주세요...</p>
           </div>
         )}
-        
-        {reportData && !isLoading && (
-          <>  
-            <ReportDisplay report={reportData} />
+
+        {error && <div className="error-message">{error}</div>}
+
+        {!isLoading && !error && reportData && selectedFileName && (
+          <>
+            <button className="back-button" onClick={handleBackButtonClick}>
+              &larr; 파일 목록으로 돌아가기
+            </button>
+            <ReportDisplay 
+              report={reportData[selectedFileName]}
+              fileName={selectedFileName}
+            />
+          </>
+        )}
+
+        {!isLoading && !error && reportData && !selectedFileName && (
+          <>
+            <div className="file-summary-container">
+              <h3>분석 완료: {Object.keys(reportData).length}개 파일</h3>
+
+              {Object.entries(reportData).map(([fileName, report]) => (
+                <button 
+                  key={fileName} 
+                  className={`file-summary-box ${getFileBoxClass(report)}`}
+                  onClick={() => handleFileBoxClick(fileName)}
+                >
+                  <span className="file-summary-icon">
+                    {getFileBoxIcon(report)}
+                  </span>
+                  {fileName}
+                </button>
+              ))}
+            </div>
             <button 
               className="reset-button"
               onClick={handleReset}
@@ -165,6 +201,35 @@ function App() {
             </button>
           </>
         )}
+
+        {!isLoading && !error && !reportData && (
+          <>
+            <FileUploader 
+              onFilesSelect={handleFilesSelect}
+              disabled={isLoading}
+            />
+            
+            {selectedFiles.length > 0 && (
+              <div className="file-list">
+                <strong>선택된 파일:</strong>
+                <ul>
+                  {selectedFiles.map(file => (
+                    <li key={file.name}>{file.name} ({Math.round(file.size / 1024)} KB)</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <button 
+              className="analyze-button"
+              onClick={handleAnalyzeClick}
+              disabled={isLoading || selectedFiles.length === 0}
+            >
+              {isLoading ? "AI가 분석 중입니다..." : "분석하기"}
+            </button>
+          </>
+        )}
+
       </main>
       
       <footer className="app-footer">

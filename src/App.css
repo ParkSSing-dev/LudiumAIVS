@@ -211,8 +211,25 @@ main {
   margin-top: 20px;
   animation: fadeIn 0.5s ease-out;
 }
+
+.report-filename {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-color-light);
+  margin: 0 0 15px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color-light);
+  text-align: left;
+  padding-left: 10px;
+  word-break: break-all;
+}
+
 .report-header {
   padding: 20px;
+}
+.report-header h2,
+.report-header .report-summary,
+.risk-meter {
   text-align: center;
 }
 .report-summary {
@@ -348,7 +365,6 @@ body.dark-mode .issue-item-quality {
   font-size: 1rem;
 }
 
-
 /* --- 리셋 버튼 --- */
 .reset-button {
   background-color: var(--card-bg-light);
@@ -365,5 +381,75 @@ body.dark-mode .issue-item-quality {
 .reset-button:hover {
   background-color: var(--ludium-purple-light);
   color: var(--ludium-purple-dark);
+}
+
+/* --- 뒤로 가기 버튼 --- */
+.back-button {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color-light);
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  transition: all 0.2s ease;
+}
+.back-button:hover {
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+/* --- 파일 요약 컨테이너 --- */
+.file-summary-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: 8px;
+}
+.file-summary-container h3 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 10px;
+}
+
+/* --- 파일 요약 박스  --- */
+.file-summary-box {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg-light);
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.file-summary-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.file-summary-icon {
+  margin-right: 10px;
+}
+
+/* 파일 박스 색상 (기존 리포트 헤더와 동일한 로직) */
+.file-summary-box.status-pass {
+  border-left: 5px solid #28a745;
+  background: var(--card-bg-light);
+}
+.file-summary-box.status-fail {
+  border-left: 5px solid #DC3545;
+  background: var(--card-bg-light);
+}
+/* 경고(Warning) 상태 (노란색) */
+.file-summary-box.status-warning {
+  border-left: 5px solid #FFC107;
+  background: var(--card-bg-light);
 }
 
