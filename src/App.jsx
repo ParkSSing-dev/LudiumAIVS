@@ -3,7 +3,7 @@ import './App.css';
 import FileUploader from './components/FileUploader';
 import ReportDisplay from './components/ReportDisplay';
 
-const API_URL = 'https://ludium-aivs-server.vercel.app/analyze';
+const API_URL = 'https://ludiumaivs-server.onrender.com/analyze';
 const ALLOWED_EXTENSIONS = ['.js', '.sol', '.json', '.jsx', '.ts', '.txt', '.md'];
 
 function App() {
