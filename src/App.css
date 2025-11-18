@@ -1,70 +1,16 @@
-/* 기본값 정의 */
-:root {
-  --bg-color: #FFFFFF; 
-  --text-color: #333333;
-  --text-color-light: #555555;
-  --card-bg: #F8F9FA;
-  --card-bg-light: #FFFFFF;
-  --border-color: #E0E0E0;
-  --border-color-light: #EEEEEE;
-  --ludium-purple: #830e7b;
-  --ludium-purple-dark: #5935A1;
-  --ludium-purple-hover: #6F42C1;
-  --ludium-purple-light: #EFEAFF;
-  --disabled-bg: #E0E0E0;
-  --disabled-text: #999999;
-}
-
-/* 다크모드 색상 변수 */
-body.dark-mode {
-  --bg-color: #121212;
-  --text-color: #E0E0E0;
-  --text-color-light: #AAAAAA;
-  --card-bg: #1E1E1E;
-  --card-bg-light: #2C2C2C;
-  --border-color: #444444;
-  --border-color-light: #333333;
-  --ludium-purple: #BB86FC;
-  --ludium-purple-dark: #3700B3;
-  --ludium-purple-hover: #D0BCFF;
-  --ludium-purple-light: #3A2C4D;
-  --disabled-bg: #444444;
-  --disabled-text: #777777;
-}
-
 /* --- 기본 레이아웃 --- */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: #FFFFFF;
+  color: #333333;
   margin: 0;
   padding: 0;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .App {
   max-width: 900px;
-  margin: 10px auto;
+  margin: 0 auto;
   padding: 20px;
-}
-
-.theme-toggle {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background: var(--card-bg-light);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: all 0.2s ease;
-}
-.theme-toggle:hover {
-  background: var(--ludium-purple-light);
-  color: var(--ludium-purple);
 }
 
 .app-header {
@@ -96,17 +42,17 @@ main {
 
 /* --- 파일 업로더  --- */
 .file-uploader {
-  border: 2px dashed var(--border-color);
+  border: 2px dashed #D0D0D0;
   border-radius: 10px;
   padding: 30px;
   text-align: center;
   cursor: pointer;
-  background-color: var(--card-bg);
+  background-color: #F9F9F9;
   transition: all 0.2s ease-in-out;
 }
 .file-uploader.drag-over {
-  border-color: var(--ludium-purple-hover);
-  background-color: var(--ludium-purple-light);
+  border-color: #6F42C1;
+  background-color: #EFEAFF;
 }
 .file-uploader.disabled {
   opacity: 0.6;
@@ -123,7 +69,7 @@ main {
   font-size: 1.1rem;
   font-weight: bold;
   margin: 10px 0;
-  color: var(--text-color);
+  color: #444444;
 }
 .file-label small {
   color: #777777;
@@ -131,8 +77,8 @@ main {
 
 /* --- 선택된 파일 목록 (Light Mode) --- */
 .file-list {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background: #F8F9FA;
+  border: 1px solid #E0E0E0;
   padding: 15px;
   border-radius: 8px;
 }
@@ -142,8 +88,8 @@ main {
   margin: 10px 0 0 0;
 }
 .file-list li {
-  background: var(--card-bg-light);
-  border: 1px solid var(--border-color);
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
   padding: 5px 10px;
   border-radius: 4px;
   margin-bottom: 5px;
@@ -152,7 +98,7 @@ main {
 
 /* --- 분석 버튼  --- */
 .analyze-button {
-  background: linear-gradient(90deg, var(--ludium-purple-dark), var(--ludium-purple-hover));
+  background-color: #6F42C1;
   color: #FFFFFF;
   border: none;
   padding: 15px 30px;
@@ -161,18 +107,14 @@ main {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 .analyze-button:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-  opacity: 0.9;
+  background-color: #5935A1;
 }
 .analyze-button:disabled {
-  background: var(--disabled-bg);
-  color: var(--disabled-text);
+  background-color: #E0E0E0;
+  color: #999999;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 /* --- 에러 / 로딩 (Light Mode) --- */
@@ -188,11 +130,11 @@ main {
 .loading-spinner {
   text-align: center;
   padding: 40px;
-  color: var(--text-color-light);
+  color: #555;
 }
 .spinner {
-  border: 5px solid var(--border-color);
-  border-top: 5px solid var(--ludium-purple-hover);
+  border: 5px solid #E0E0E0;
+  border-top: 5px solid #6F42C1;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -209,27 +151,9 @@ main {
   border-radius: 10px;
   overflow: hidden;
   margin-top: 20px;
-  animation: fadeIn 0.5s ease-out;
 }
-
-.report-filename {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: var(--text-color-light);
-  margin: 0 0 15px 0;
-  padding-bottom: 15px;
-  border-bottom: 1px solid var(--border-color-light);
-  text-align: left;
-  padding-left: 10px;
-  word-break: break-all;
-}
-
 .report-header {
   padding: 20px;
-}
-.report-header h2,
-.report-header .report-summary,
-.risk-meter {
   text-align: center;
 }
 .report-summary {
@@ -237,85 +161,32 @@ main {
   margin: 10px 0;
 }
 .report-body {
-  background-color: var(--card-bg);
+  background-color: #F8F9FA;
   padding: 10px 20px 20px 20px;
-}
-
-/* 리스크 시각화 스타일 */
-.risk-meter {
-  margin-top: 20px;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-.risk-meter strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--text-color-light);
-  font-size: 0.9rem;
-}
-.risk-meter strong span {
-  font-size: 1.1rem;
-}
-.risk-bar-container {
-  width: 100%;
-  height: 10px;
-  background-color: var(--border-color);
-  border-radius: 5px;
-  overflow: hidden;
-}
-.risk-bar {
-  height: 100%;
-  border-radius: 5px;
-  transition: width 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* [PASS (초록색) 테마] */
 .report-container.status-pass {
-  border: 1px solid #28a745;
+  border: 1px solid #C3E6CB;
 }
 .report-container.status-pass .report-header {
-  background-color: #28a745;
-  color: #FFFFFF;
+  background-color: #D4EDDA;
+  color: #155724;
 }
 
 /* [FAIL (빨간색) 테마] */
 .report-container.status-fail {
-  border: 1px solid #DC3545;
+  border: 1px solid #F5C6CB;
 }
 .report-container.status-fail .report-header {
-  background-color: #DC3545;
-  color: #FFFFFF;
+  background-color: #F8D7DA;
+  color: #721c24;
 }
 
-/* [WARNING (노란색) 테마] */
-.report-container.status-warning {
-  border: 1px solid #FFC107; 
-}
-.report-container.status-warning .report-header {
-  background-color: #FFF3CD; 
-  color: #664d03; 
-}
-
-body.dark-mode .report-container.status-warning .report-header {
-  background-color: #4d3c1a; 
-  color: #FFF3CD; 
-}
-
-/* [세부 항목 (스캠/유효성)] */
+/* [세부 항목] */
 .check-section {
-  background: var(--card-bg-light);
-  border: 1px solid var(--border-color);
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
   padding: 15px;
   border-radius: 8px;
   margin-top: 15px;
@@ -323,11 +194,11 @@ body.dark-mode .report-container.status-warning .report-header {
 .check-section h3 {
   margin: 0 0 15px 0;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color-light);
+  border-bottom: 1px solid #EEEEEE;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--text-color);
+  color: #333333;
 }
 
 .no-issues {
@@ -361,29 +232,19 @@ body.dark-mode .report-container.status-warning .report-header {
   background: #FFFBF0;
 }
 
-body.dark-mode .issue-item-scam {
-  background: #4a1c24;
-  color: #F8D7DA;
-}
-body.dark-mode .issue-item-validity {
-  background: #1e3624;
-  color: #D4EDDA;
-}
-body.dark-mode .issue-item-quality {
-  background: #4d3c1a;
-  color: #FFF3CD;
-}
-
 .issue-list li p {
   margin: 0;
   font-size: 1rem;
+  color: #333333;
 }
+
+
 
 /* --- 리셋 버튼 --- */
 .reset-button {
-  background-color: var(--card-bg-light);
-  color: var(--ludium-purple-hover);
-  border: 2px solid var(--ludium-purple-hover);
+  background-color: #FFFFFF;
+  color: #6F42C1;
+  border: 2px solid #6F42C1;
   padding: 13px 30px;
   border-radius: 8px;
   font-size: 1.2rem;
@@ -393,77 +254,7 @@ body.dark-mode .issue-item-quality {
   margin-top: 20px;
 }
 .reset-button:hover {
-  background-color: var(--ludium-purple-light);
-  color: var(--ludium-purple-dark);
-}
-
-/* --- 뒤로 가기 버튼 --- */
-.back-button {
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-color-light);
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  transition: all 0.2s ease;
-}
-.back-button:hover {
-  background: var(--card-bg);
-  color: var(--text-color);
-}
-
-/* --- 파일 요약 컨테이너 --- */
-.file-summary-container {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  padding: 20px;
-  border-radius: 8px;
-}
-.file-summary-container h3 {
-  margin-top: 0;
-  border-bottom: 1px solid var(--border-color-light);
-  padding-bottom: 10px;
-}
-
-/* --- 파일 요약 박스  --- */
-.file-summary-box {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg-light);
-  color: var(--text-color);
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.file-summary-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.file-summary-icon {
-  margin-right: 10px;
-}
-
-/* 파일 박스 색상 (기존 리포트 헤더와 동일한 로직) */
-.file-summary-box.status-pass {
-  border-left: 5px solid #28a745;
-  background: var(--card-bg-light);
-}
-.file-summary-box.status-fail {
-  border-left: 5px solid #DC3545;
-  background: var(--card-bg-light);
-}
-/* 경고(Warning) 상태 (노란색) */
-.file-summary-box.status-warning {
-  border-left: 5px solid #FFC107;
-  background: var(--card-bg-light);
+  background-color: #EFEAFF;
+  color: #5935A1;
 }
 

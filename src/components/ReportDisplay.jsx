@@ -7,52 +7,51 @@ function formatCheckTitle(key) {
 
 function getCheckEmoji(key) {
   const emojiMap = {
-    scamCheck: '🚨',
-    validityCheck: '⚙️', 
-    sensationalCheck: '🧐',
-    dataCollectionCheck: '🕵️'
+    securityThreatCheck: '🚨',
+    vulnerabilityCheck: '🛡️',
+    privacyCheck: '🕵️',
+    syntaxCheck: '⚙️',
+    codeQualityCheck: '🤔',
+    contentCheck: '🧐'
   };
+
   return emojiMap[key] || '📊'; 
 }
 
-/**
- * finalDecision 값에 따라 Risk Level 텍스트, 색상, 게이지 너비를 반환함
- * @param {string} decision - AI가 반환한 finalDecision (EX: 'SCAM_DETECTED')
- */
-
 const getRiskProps = (decision) => {
   switch (decision) {
-    case 'SCAM_DETECTED':
-      return { level: '심각 (HIGH)', color: '#FFFFFF', width: '100%' };
+    case 'CRITICAL_RISK':
+      return { level: '심각 (CRITICAL)', barColor: '#FFFFFF', width: '100%' };
+    case 'SECURITY_WARNING':
+      return { level: '높음 (HIGH)', barColor: '#FFC107', width: '80%' };
     case 'INVALID_FORMAT':
-      return { level: '중간 (MEDIUM)', color: '#FFC107', width: '66%' };
+      return { level: '중간 (MEDIUM)', barColor: '#FFC107', width: '50%' };
     case 'CONTENT_WARNING':
-      return { level: '낮음 (LOW)', color: '#FFC107', width: '33%' };
+      return { level: '낮음 (LOW)', barColor: '#FFC107', width: '25%' };
     case 'CLEAN':
-      return { level: '안전 (CLEAN)', color: '#FFFFFF', width: '0%' };
+      return { level: '안전 (CLEAN)', barColor: '#FFFFFF', width: '0%' };
     default:
-      return { level: '알 수 없음', color: '#FFFFFF', width: '50%' };
+      return { level: '알 수 없음', barColor: '#FFFFFF', width: '50%' };
   }
 }
 
 const getStatusClass = (decision) => {
   switch (decision) {
     case 'CLEAN':
-      return 'status-pass';
-    case 'SCAM_DETECTED':
+      return 'status-pass';  
+    case 'CRITICAL_RISK':
     case 'INVALID_FORMAT':
-      return 'status-fail';
+      return 'status-fail';    
+    case 'SECURITY_WARNING':
     case 'CONTENT_WARNING':
-      return 'status-warning';
+      return 'status-warning';     
     default:
       return 'status-fail';
   }
 }
 
-function ReportDisplay({ report, fileName }) {
-  
-  //const isFail = report.finalDecision !== 'CLEAN';
-  const statusClass = getStatusClass(report.finalDecision);
+function ReportDisplay({ report }) {
+  const statusClass = getStatusClass(report.finalDecision); 
   const reportDetails = report.reportDetails;
   const checkKeys = Object.keys(reportDetails);
   const risk = getRiskProps(report.finalDecision);
@@ -60,16 +59,17 @@ function ReportDisplay({ report, fileName }) {
   return (
     <div className={`report-container ${statusClass}`}>
       <div className="report-header">
-        <h3 className="report-filename">파일명 : {fileName}</h3>
         <h2>
           {report.finalDecision === 'CLEAN' ? 
             '✅ 검증 통과 (Pass)' : 
-            (report.finalDecision === 'CONTENT_WARNING' ? 
+            (report.finalDecision === 'CONTENT_WARNING' || report.finalDecision === 'SECURITY_WARNING' ? 
               '⚠️ 검증 경고 (Warning)' : 
               '❌ 검증 실패 (Fail)')
           }
         </h2>
+        
         <p className="report-summary">{report.summary}</p>
+
         <div className="risk-meter">
           <strong>Risk Level: <span>{risk.level}</span></strong>
           <div className="risk-bar-container">
@@ -88,7 +88,6 @@ function ReportDisplay({ report, fileName }) {
         {checkKeys.map((key) => {
           
           const checkData = reportDetails[key];
-
           if (!checkData || !checkData.issues) return null; 
 
           const issues = checkData.issues;
@@ -105,14 +104,7 @@ function ReportDisplay({ report, fileName }) {
               <ul className="issue-list">
                 {issues.map((issue, index) => {
                   
-                  const safeKeywords = [
-                    '없음', 
-                    '유효함', 
-                    '발견되지 않았습니다', 
-                    '모든 파일이 유효함', 
-                    '구문적으로 유효합니다'
-                  ];
-
+                  const safeKeywords = ['없음', '유효함', '발견되지 않았습니다', '모든 파일이 유효함', '구문적으로 유효합니다'];
                   const isSafeIssue = safeKeywords.some(keyword => 
                       issue.includes(keyword)
                   );
@@ -121,10 +113,13 @@ function ReportDisplay({ report, fileName }) {
                   
                   if (isSafeIssue) {
                     itemStyleClass = 'issue-item-validity';
-                  } else if (key === 'scamCheck' || key === 'validityCheck') {
-                    itemStyleClass = 'issue-item-scam';  
-                  } else if (key === 'sensationalCheck' || key === 'dataCollectionCheck' || key === 'logicCheck') {
-                    itemStyleClass = 'issue-item-quality';       
+                  
+                  } else if (key === 'securityThreatCheck' || key === 'vulnerabilityCheck' || key === 'syntaxCheck') {
+                    itemStyleClass = 'issue-item-scam';
+                  
+                  } else if (key === 'privacyCheck' || key === 'codeQualityCheck' || key === 'contentCheck') {
+                    itemStyleClass = 'issue-item-quality';
+                  
                   } else {
                     itemStyleClass = 'issue-item-scam'; 
                   }
@@ -139,7 +134,6 @@ function ReportDisplay({ report, fileName }) {
             </div>
           );
         })}
-        
       </div>
     </div>
   );

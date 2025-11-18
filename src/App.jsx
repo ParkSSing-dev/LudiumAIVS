@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import FileUploader from './components/FileUploader';
 import ReportDisplay from './components/ReportDisplay';
 
-const API_URL = 'https://ludiumaivs-server.onrender.com/analyze';
+// BE 배포 주소로 설정 (예시: https://ludium.onrender.com/analyze)
+const API_URL = 'http://localhost:3000/analyze';
 const ALLOWED_EXTENSIONS = ['.js', '.sol', '.json', '.jsx', '.ts', '.txt', '.md'];
 
 function App() {
@@ -11,17 +12,10 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [reportData, setReportData] = useState(null);
   const [error, setError] = useState(null);
-  const [selectedFileName, setSelectedFileName] = useState(null);
-
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  useEffect(() => {
-    document.body.classList.toggle('dark-mode', isDarkMode);
-  }, [isDarkMode]);
 
   const handleFilesSelect = (files) => {
     setError(null);
     setReportData(null);
-    setSelectedFileName(null);
     
     const validFiles = files.filter(file => {
       const extension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
@@ -45,7 +39,6 @@ function App() {
     setIsLoading(true);
     setError(null);
     setReportData(null);
-    setSelectedFileName(null);
 
     const fileReadPromises = selectedFiles.map(file => {
       return new Promise((resolve, reject) => {
@@ -98,56 +91,10 @@ function App() {
     setSelectedFiles([]);
     setReportData(null);
     setError(null);
-    setSelectedFileName(null);
-  };
-
-  const handleFileBoxClick = (fileName) => {
-    setSelectedFileName(fileName);
-  };
-
-  const handleBackButtonClick = () => {
-    setSelectedFileName(null);
-  };
-
-  const getFileBoxClass = (report) => {
-    if (!report) return 'status-fail';
-    switch (report.finalDecision) {
-      case 'CLEAN':
-        return 'status-pass';
-      case 'SCAM_DETECTED':
-      case 'INVALID_FORMAT':
-        return 'status-fail';
-      case 'CONTENT_WARNING':
-        return 'status-warning';
-      default:
-        return 'status-fail';
-    }
-  };
-
-  const getFileBoxIcon = (report) => {
-    if (!report) return '❓';
-    switch (report.finalDecision) {
-      case 'CLEAN':
-        return '🟩'; // 초록
-      case 'SCAM_DETECTED':
-      case 'INVALID_FORMAT':
-        return '🟥'; // 빨강
-      case 'CONTENT_WARNING':
-        return '🟨'; // 노랑
-      default:
-        return '❓';
-    }
   };
 
   return (
     <div className="App">
-      <button 
-        className="theme-toggle"
-        onClick={() => setIsDarkMode(!isDarkMode)}
-      >
-        {isDarkMode ? '☀️' : '🌙'}
-      </button>
-
       <header className="app-header">
         <h1> Ludium Verification System </h1>
         <p>코드를 업로드하여 '스캠' 및 '기본 유효성'을 검사합니다.</p>
@@ -163,36 +110,9 @@ function App() {
 
         {error && <div className="error-message">{error}</div>}
 
-        {!isLoading && !error && reportData && selectedFileName && (
-          <>
-            <button className="back-button" onClick={handleBackButtonClick}>
-              &larr; 파일 목록으로 돌아가기
-            </button>
-            <ReportDisplay 
-              report={reportData[selectedFileName]}
-              fileName={selectedFileName}
-            />
-          </>
-        )}
-
-        {!isLoading && !error && reportData && !selectedFileName && (
-          <>
-            <div className="file-summary-container">
-              <h3>분석 완료: {Object.keys(reportData).length}개 파일</h3>
-
-              {Object.entries(reportData).map(([fileName, report]) => (
-                <button 
-                  key={fileName} 
-                  className={`file-summary-box ${getFileBoxClass(report)}`}
-                  onClick={() => handleFileBoxClick(fileName)}
-                >
-                  <span className="file-summary-icon">
-                    {getFileBoxIcon(report)}
-                  </span>
-                  {fileName}
-                </button>
-              ))}
-            </div>
+        {!isLoading && !error && reportData && (
+          <>  
+            <ReportDisplay report={reportData} />
             <button 
               className="reset-button"
               onClick={handleReset}
@@ -201,7 +121,7 @@ function App() {
             </button>
           </>
         )}
-
+        
         {!isLoading && !error && !reportData && (
           <>
             <FileUploader 
