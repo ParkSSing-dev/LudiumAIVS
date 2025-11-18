@@ -4,7 +4,7 @@ import FileUploader from './components/FileUploader';
 import ReportDisplay from './components/ReportDisplay';
 
 // BE 배포 주소로 설정 (예시: https://ludium.onrender.com/analyze)
-const API_URL = 'http://localhost:3000/analyze';
+const API_URL = 'https://ludiumaivs-server.onrender.com/analyze';
 const ALLOWED_EXTENSIONS = ['.js', '.sol', '.json', '.jsx', '.ts', '.txt', '.md'];
 
 function App() {
