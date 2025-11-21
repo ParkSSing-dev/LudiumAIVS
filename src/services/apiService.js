@@ -26,10 +26,12 @@ export const analyzeCode = async (codeFiles) => {
     const responseJson = await response.json();
 
     if (!response.ok || responseJson.status !== 'success') {
-      const errorSummary = responseJson.analysis 
-        ? responseJson.analysis.summary 
-        : (responseJson.message || `API 호출 실패: ${response.statusText}`);
-      throw new Error(errorSummary);
+      const errorSummary = responseJson.detail 
+        || (responseJson.analysis && responseJson.analysis.summary)
+        || responseJson.message 
+        || `API 호출 실패: ${response.statusText}`;
+        
+      throw new Error(errorSummary);  
     }
 
     return responseJson.analysis;
