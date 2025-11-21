@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/analyze';
+const API_URL = 'https://ludiumaivs-server.onrender.com/analyze';
 
 /**
  * 코드 분석 API를 호출합니다.
