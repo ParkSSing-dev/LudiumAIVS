@@ -7,6 +7,7 @@ import ThemeToggle from './components/ui/ThemeToggle';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import UploadView from './components/views/UploadView';
 import ResultView from './components/views/ResultView';
+import ErrorView from './components/views/ErrorView';
 
 function App() {
   const {
