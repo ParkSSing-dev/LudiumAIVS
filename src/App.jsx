@@ -32,7 +32,12 @@ function App() {
       <main>
         {isLoading && <LoadingSpinner />}
 
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <ErrorView 
+            error={error} 
+            onRetry={handleReset} 
+          />
+        )}
 
         {!isLoading && !error && reportData && (
           <ResultView 
