@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
 import { useLudiumApp } from './hooks/useLudiumApp';
 import Header from './components/layout/Header';
@@ -6,8 +6,9 @@ import Footer from './components/layout/Footer';
 import ThemeToggle from './components/ui/ThemeToggle';
 import SkeletonLoader from './components/ui/SkeletonLoader';
 import UploadView from './components/views/UploadView';
-import ResultView from './components/views/ResultView';
 import ErrorView from './components/views/ErrorView';
+
+const ResultView = lazy(() => import('./components/views/ResultView'));
 
 function App() {
   const {
@@ -32,6 +33,7 @@ function App() {
       <Header />
 
       <main>
+
         {isLoading && <SkeletonLoader />}
 
         {error && (
@@ -42,13 +44,15 @@ function App() {
         )}
 
         {!isLoading && !error && reportData && (
-          <ResultView 
-            reportData={reportData}
-            fileContents={fileContents}
-            selectedFileName={selectedFileName}
-            setSelectedFileName={setSelectedFileName}
-            onReset={handleReset}
-          />
+          <Suspense fallback={<SkeletonLoader />}>
+            <ResultView 
+              reportData={reportData}
+              fileContents={fileContents}
+              selectedFileName={selectedFileName}
+              setSelectedFileName={setSelectedFileName}
+              onReset={handleReset}
+            />
+          </Suspense>
         )}
 
         {!isLoading && !error && !reportData && (
@@ -59,7 +63,8 @@ function App() {
             onAnalyze={handleAnalyze}
           />
         )}
-      </main>     
+      </main>
+      
       <Footer />
     </div>
   );

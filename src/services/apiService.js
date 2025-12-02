@@ -37,6 +37,6 @@ export const analyzeCode = async (codeFiles) => {
     return responseJson.analysis;
   } catch (error) {
     console.error("API 호출 중 오류:", error);
-    throw error; // 에러를 다시 던져서 호출하는 쪽에서 처리하도록 함
+    throw error;
   }
 };

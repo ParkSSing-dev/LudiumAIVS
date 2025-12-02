@@ -26,7 +26,7 @@ const SkeletonLoader = () => {
           <div className="skeleton skeleton-line short" style={{ margin: '0 auto 20px auto', height: '30px' }}></div>
           <div className="skeleton skeleton-line medium" style={{ margin: '0 auto 30px auto' }}></div>
           
-          {[...Array(4)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <div key={`report-${i}`} style={{ marginTop: '20px' }}>
               <div className="skeleton skeleton-line short" style={{ marginBottom: '10px' }}></div>
               <div className="skeleton skeleton-line" style={{ height: '60px', borderRadius: '8px' }}></div>

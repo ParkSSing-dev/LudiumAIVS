@@ -4,7 +4,6 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const CodeViewer = ({ code, fileName }) => {
   
-  // 파일 확장자에 따라 언어 자동 감지
   const getLanguage = (name) => {
     if (!name) return 'javascript';
     const ext = name.split('.').pop().toLowerCase();

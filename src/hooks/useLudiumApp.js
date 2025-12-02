@@ -13,7 +13,6 @@ export const useLudiumApp = () => {
     return savedReport ? JSON.parse(savedReport) : null;
   });
 
-  // [추가] 원본 파일 내용을 저장할 상태 (새로고침 유지)
   const [fileContents, setFileContents] = useState(() => {
     const savedContents = sessionStorage.getItem('ludium-file-contents');
     return savedContents ? JSON.parse(savedContents) : null;
@@ -27,7 +26,6 @@ export const useLudiumApp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // --- Effects ---
   useEffect(() => {
     document.body.classList.toggle('dark-mode', isDarkMode);
     localStorage.setItem('ludium-theme', isDarkMode ? 'dark' : 'light');
@@ -41,7 +39,6 @@ export const useLudiumApp = () => {
     }
   }, [reportData]);
 
-  // [추가] 파일 내용도 세션에 저장
   useEffect(() => {
     if (fileContents) {
       sessionStorage.setItem('ludium-file-contents', JSON.stringify(fileContents));
@@ -58,13 +55,12 @@ export const useLudiumApp = () => {
     }
   }, [selectedFileName]);
 
-  // --- Actions ---
   const toggleTheme = () => setIsDarkMode(prev => !prev);
 
   const handleFilesSelect = (files) => {
     setError(null);
     setReportData(null);
-    setFileContents(null); // 초기화
+    setFileContents(null);
     setSelectedFileName(null);
     
     const validFiles = filterValidFiles(files);
@@ -86,13 +82,12 @@ export const useLudiumApp = () => {
     setIsLoading(true);
     setError(null);
     setReportData(null);
-    setFileContents(null); // 초기화
+    setFileContents(null);
     setSelectedFileName(null); 
 
     try {
       const codeFiles = await readAllFiles(selectedFiles);
       
-      // [추가] 읽어온 파일 내용을 객체 형태로 변환하여 저장 (파일명: 내용)
       const contentsMap = {};
       codeFiles.forEach(file => {
         contentsMap[file.fileName] = file.content;
@@ -130,11 +125,11 @@ export const useLudiumApp = () => {
   const handleReset = () => {
     setSelectedFiles([]);
     setReportData(null);
-    setFileContents(null); // 초기화
+    setFileContents(null);
     setSelectedFileName(null);
     setError(null);
     sessionStorage.removeItem('ludium-report-data');
-    sessionStorage.removeItem('ludium-file-contents'); // 삭제
+    sessionStorage.removeItem('ludium-file-contents');
     sessionStorage.removeItem('ludium-selected-file');
   };
 
