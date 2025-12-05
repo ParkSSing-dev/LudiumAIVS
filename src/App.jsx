@@ -29,14 +29,11 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      
+      <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />     
       <Header />
 
       <main>
-
         {isLoading && <SkeletonLoader />}
-
         {error && (
           <ErrorView 
             error={error} 

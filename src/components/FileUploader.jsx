@@ -4,7 +4,6 @@ const ACCEPTED_EXTENSIONS = ".js,.jsx,.ts,.tsx,.sol,.json,.txt,.md,.py,.java,.c,
 
 function FileUploader({ onFilesSelect, disabled }) {
   const [dragOver, setDragOver] = useState(false);
-
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);

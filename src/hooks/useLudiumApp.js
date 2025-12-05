@@ -56,7 +56,6 @@ export const useLudiumApp = () => {
   }, [selectedFileName]);
 
   const toggleTheme = () => setIsDarkMode(prev => !prev);
-
   const handleFilesSelect = (newfiles) => {
     setError(null);
     setReportData(null);
@@ -64,7 +63,6 @@ export const useLudiumApp = () => {
     setSelectedFileName(null);
     
     const validNewFiles = filterValidFiles(newfiles);
-
     if (validNewFiles.length !== newfiles.length) {
       setError("잘못된 형식의 파일을 업로드 하였습니다. (.js, .sol, .json 등만 가능합니다.)");
     }
@@ -98,8 +96,7 @@ export const useLudiumApp = () => {
     setSelectedFileName(null); 
 
     try {
-      const codeFiles = await readAllFiles(selectedFiles);
-      
+      const codeFiles = await readAllFiles(selectedFiles);  
       const contentsMap = {};
       codeFiles.forEach(file => {
         contentsMap[file.fileName] = file.content;

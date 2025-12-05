@@ -22,8 +22,7 @@ const UploadView = ({
   const handleAnalyzeClick = () => {
     if (inputMode === 'text' && directCode.trim()) {
       const blob = new Blob([directCode], { type: 'text/plain' });
-      const virtualFile = new File([blob], "direct_input_code.txt", { type: "text/plain" });
-      
+      const virtualFile = new File([blob], "direct_input_code.txt", { type: "text/plain" }); 
       onFilesSelect([virtualFile]);
       setTimeout(onAnalyze, 100); 
     } else {
@@ -33,7 +32,6 @@ const UploadView = ({
 
   return (
     <div className="upload-view">
-
       <div className="input-mode-tabs">
         <button 
           className={`mode-tab ${inputMode === 'file' ? 'active' : ''}`}
@@ -54,8 +52,7 @@ const UploadView = ({
           <FileUploader 
             onFilesSelect={onFilesSelect}
             disabled={isLoading}
-          />
-          
+          />     
           {selectedFiles.length > 0 && (
             <div className="file-list">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
@@ -71,7 +68,7 @@ const UploadView = ({
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
                       {file.name} <small>({Math.round(file.size / 1024)} KB)</small>
                     </span>
-                    
+                  
                     <button 
                       onClick={() => onRemoveFile(index)}
                       style={{ 
