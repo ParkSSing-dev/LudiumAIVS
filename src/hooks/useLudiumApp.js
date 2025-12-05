@@ -56,21 +56,31 @@ export const useLudiumApp = () => {
   }, [selectedFileName]);
 
   const toggleTheme = () => setIsDarkMode(prev => !prev);
-
-  const handleFilesSelect = (files) => {
+  const handleFilesSelect = (newfiles) => {
     setError(null);
     setReportData(null);
     setFileContents(null);
     setSelectedFileName(null);
     
-    const validFiles = filterValidFiles(files);
-
-    if (validFiles.length !== files.length) {
-      setError("잘못된 형식의 파일을 업로드 하였습니다. 파일 형식을 확인해주세요.");
-      setSelectedFiles([]);
-    } else {
-      setSelectedFiles(validFiles);
+    const validNewFiles = filterValidFiles(newfiles);
+    if (validNewFiles.length !== newfiles.length) {
+      setError("잘못된 형식의 파일을 업로드 하였습니다. (.js, .sol, .json 등만 가능합니다.)");
     }
+
+    const currentCount = selectedFiles.length;
+    const newCount = validNewFiles.length;
+
+    if (currentCount + newCount > 10) {
+      setError(`최대 10개까지만 업로드할 수 있습니다. (현재: ${currentCount}개, 추가 시도: ${newCount}개)`);
+      return;
+    }
+
+    setSelectedFiles(prev => [...prev, ...validNewFiles]);
+  };
+
+  const handleRemoveFile = (indexToRemove) => {
+    setSelectedFiles(prev => prev.filter((_, index) => index !== indexToRemove));
+    setError(null);
   };
 
   const handleAnalyze = async () => {
@@ -78,7 +88,7 @@ export const useLudiumApp = () => {
         setError("최소 1개 이상의 파일을 업로드해야 합니다.");
       return;
     }
-    
+
     setIsLoading(true);
     setError(null);
     setReportData(null);
@@ -86,8 +96,7 @@ export const useLudiumApp = () => {
     setSelectedFileName(null); 
 
     try {
-      const codeFiles = await readAllFiles(selectedFiles);
-      
+      const codeFiles = await readAllFiles(selectedFiles);  
       const contentsMap = {};
       codeFiles.forEach(file => {
         contentsMap[file.fileName] = file.content;
@@ -143,6 +152,7 @@ export const useLudiumApp = () => {
     selectedFileName,
     toggleTheme,
     handleFilesSelect,
+    handleRemoveFile,
     handleAnalyze,
     handleReset,
     setSelectedFileName

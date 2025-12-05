@@ -21,6 +21,7 @@ function App() {
     selectedFileName,
     toggleTheme,
     handleFilesSelect,
+    handleRemoveFile,
     handleAnalyze,
     handleReset,
     setSelectedFileName
@@ -28,14 +29,11 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      
+      <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />     
       <Header />
 
       <main>
-
         {isLoading && <SkeletonLoader />}
-
         {error && (
           <ErrorView 
             error={error} 
@@ -60,6 +58,7 @@ function App() {
             selectedFiles={selectedFiles}
             isLoading={isLoading}
             onFilesSelect={handleFilesSelect}
+            onRemoveFile={handleRemoveFile}
             onAnalyze={handleAnalyze}
           />
         )}
