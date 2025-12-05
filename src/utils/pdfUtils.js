@@ -23,7 +23,6 @@ export const exportToPDF = async (elementId, fileName = 'report.pdf') => {
           el.style.setProperty('transition', 'none', 'important');
           el.style.setProperty('box-shadow', 'none', 'important');
         });
-
         const preElements = target.querySelectorAll('pre');
         preElements.forEach((pre) => {
           pre.style.setProperty('white-space', 'pre-wrap', 'important');
@@ -42,7 +41,6 @@ export const exportToPDF = async (elementId, fileName = 'report.pdf') => {
         });
       }
     });
-
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const imgWidth = 210; 

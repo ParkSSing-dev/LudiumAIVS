@@ -1,5 +1,4 @@
 const API_URL = 'https://ludiumaivs-server.onrender.com/analyze';
-
 /**
  * 코드 분석 API를 호출합니다.
  * @param {Array} codeFiles - 분석할 파일 객체 배열 ({ fileName, content })
@@ -33,7 +32,6 @@ export const analyzeCode = async (codeFiles) => {
         
       throw new Error(errorSummary);  
     }
-
     return responseJson.analysis;
   } catch (error) {
     console.error("API 호출 중 오류:", error);

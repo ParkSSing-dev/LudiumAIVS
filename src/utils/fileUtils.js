@@ -15,7 +15,7 @@ export const filterValidFiles = (files) => {
 /**
  * File 객체를 텍스트 내용으로 읽어옴
  * @param {File} file - 읽을 파일 객체
- * @returns {Promise<Object>} - { fileName, content } 객체
+ * @returns {Promise<Object>} - { fileName, content }객체
  */
 export const readFileAsText = (file) => {
   return new Promise((resolve, reject) => {
