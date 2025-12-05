@@ -5,6 +5,7 @@ const UploadView = ({
   selectedFiles, 
   isLoading, 
   onFilesSelect, 
+  onRemoveFile,
   onAnalyze 
 }) => {
   const [inputMode, setInputMode] = useState('file');
@@ -12,54 +13,37 @@ const UploadView = ({
 
   const handleTabChange = (mode) => {
     setInputMode(mode);
-    if (mode === 'text') onFilesSelect([]); 
-    if (mode === 'file') setDirectCode('');
   };
 
   const handleTextChange = (e) => {
-    const code = e.target.value;
-    setDirectCode(code);
-    
-    if (code.trim()) {
-      const blob = new Blob([code], { type: 'text/plain' });
-      const virtualFile = new File([blob], "direct_input_code.js", { type: "text/plain" });
+    setDirectCode(e.target.value);
+  };
+
+  const handleAnalyzeClick = () => {
+    if (inputMode === 'text' && directCode.trim()) {
+      const blob = new Blob([directCode], { type: 'text/plain' });
+      const virtualFile = new File([blob], "direct_input_code.txt", { type: "text/plain" });
+      
       onFilesSelect([virtualFile]);
+      setTimeout(onAnalyze, 100); 
     } else {
-      onFilesSelect([]);
+      onAnalyze();
     }
   };
 
   return (
     <div className="upload-view">
-      
-      <div className="input-mode-tabs" style={{ display: 'flex', marginBottom: '20px', borderBottom: '1px solid var(--border-color)' }}>
+
+      <div className="input-mode-tabs">
         <button 
+          className={`mode-tab ${inputMode === 'file' ? 'active' : ''}`}
           onClick={() => handleTabChange('file')}
-          style={{
-            flex: 1,
-            padding: '12px',
-            background: inputMode === 'file' ? 'var(--card-bg)' : 'transparent',
-            border: 'none',
-            borderBottom: inputMode === 'file' ? '2px solid var(--ludium-purple)' : 'none',
-            fontWeight: inputMode === 'file' ? 'bold' : 'normal',
-            cursor: 'pointer',
-            color: 'var(--text-color)'
-          }}
         >
           📂 파일 업로드
         </button>
         <button 
+          className={`mode-tab ${inputMode === 'text' ? 'active' : ''}`}
           onClick={() => handleTabChange('text')}
-          style={{
-            flex: 1,
-            padding: '12px',
-            background: inputMode === 'text' ? 'var(--card-bg)' : 'transparent',
-            border: 'none',
-            borderBottom: inputMode === 'text' ? '2px solid var(--ludium-purple)' : 'none',
-            fontWeight: inputMode === 'text' ? 'bold' : 'normal',
-            cursor: 'pointer',
-            color: 'var(--text-color)'
-          }}
         >
           ✍️ 직접 입력
         </button>
@@ -74,11 +58,36 @@ const UploadView = ({
           
           {selectedFiles.length > 0 && (
             <div className="file-list">
-              <strong>선택된 파일:</strong>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <strong>선택된 파일 ({selectedFiles.length} / 10)</strong>
+                <span style={{ fontSize: '0.8rem', color: selectedFiles.length >= 10 ? '#dc3545' : '#888' }}>
+                  {selectedFiles.length >= 10 ? '최대 개수 도달 (추가 불가)' : '추가 가능'}
+                </span>
+              </div>
+
               <ul>
                 {selectedFiles.map((file, index) => (
-                  <li key={`${file.name}-${index}`}>
-                    {file.name} ({Math.round(file.size / 1024)} KB)
+                  <li key={`${file.name}-${index}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
+                      {file.name} <small>({Math.round(file.size / 1024)} KB)</small>
+                    </span>
+                    
+                    <button 
+                      onClick={() => onRemoveFile(index)}
+                      style={{ 
+                        background: 'none', 
+                        border: 'none', 
+                        cursor: 'pointer', 
+                        color: '#dc3545', 
+                        fontWeight: 'bold', 
+                        padding: '5px 10px',
+                        fontSize: '1rem'
+                      }}
+                      title="삭제"
+                      disabled={isLoading}
+                    >
+                      ✕
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -86,40 +95,34 @@ const UploadView = ({
           )}
         </>
       ) : (
-        <div className="direct-input-container" style={{ width: '100%' }}>
+        <div className="direct-input-container">
           <textarea
+            className="direct-input-area"
             value={directCode}
             onChange={handleTextChange}
-            placeholder="// 여기에 코드를 직접 붙여넣거나 작성하세요."
+            placeholder="// 분석하고 싶은 코드를 여기에 직접 붙여넣으세요 (Ctrl+V)."
             disabled={isLoading}
-            style={{
-              width: '100%',
-              height: '300px',
-              padding: '15px',
-              borderRadius: '8px',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--card-bg)',
-              color: 'var(--text-color)',
-              fontFamily: 'monospace',
-              fontSize: '0.9rem',
-              resize: 'vertical',
-              outline: 'none'
-            }}
+            spellCheck="false"
           />
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-color-light)', marginTop: '5px' }}>
-            * 직접 입력한 코드는 'direct_input_code.js'라는 가상의 파일명으로 분석됩니다.
+          <p className="direct-input-info">
+            * 직접 입력한 코드는 <strong>'direct_input_code.txt'</strong>라는 파일명으로 분석됩니다.
           </p>
         </div>
       )}
 
-      <button 
-        className="analyze-button"
-        onClick={onAnalyze}
-        disabled={isLoading || selectedFiles.length === 0}
-        style={{ marginTop: '20px' }}
-      >
-        {isLoading ? "AI가 분석 중입니다..." : "분석하기"}
-      </button>
+      <div className="detail-actions" style={{ marginTop: '20px' }}>
+        <button 
+          className="analyze-button"
+          onClick={handleAnalyzeClick}
+          disabled={
+            isLoading || 
+            (inputMode === 'file' && selectedFiles.length === 0) || 
+            (inputMode === 'text' && !directCode.trim())
+          }
+        >
+          {isLoading ? "AI가 분석 중입니다..." : "분석하기"}
+        </button>
+      </div>
     </div>
   );
 };

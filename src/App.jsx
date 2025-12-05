@@ -21,6 +21,7 @@ function App() {
     selectedFileName,
     toggleTheme,
     handleFilesSelect,
+    handleRemoveFile,
     handleAnalyze,
     handleReset,
     setSelectedFileName
@@ -60,6 +61,7 @@ function App() {
             selectedFiles={selectedFiles}
             isLoading={isLoading}
             onFilesSelect={handleFilesSelect}
+            onRemoveFile={handleRemoveFile}
             onAnalyze={handleAnalyze}
           />
         )}
